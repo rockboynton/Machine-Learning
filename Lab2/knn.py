@@ -23,16 +23,16 @@ class KNN:
         else:
             raise ValueError('aggregation_function must be either "mode" or "average"')
         
-        self.X = None
-        self.y = None
+        self.ref_points = None
+        self.known_outputs = None
         
 
     def fit(self, X, y):
         """
         Stores the reference points (X) and their known output values (y).
         """
-        self.X = X
-        self.y = y
+        self.ref_points = X
+        self.known_outputs = y
 
         
         
