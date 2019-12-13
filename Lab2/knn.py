@@ -40,6 +40,12 @@ class KNN:
         """
         Predicts the output variable's values for the query points X.
         """
-        
-        
+        distances = spatial.distance.cdist(X, self.ref_points)
+        k_nearest = np.argsort(distances)[:self.k]
+
+        if self.aggregation_function == 'mode': # classification
+            return stats.mode(k_nearest)
+        elif self.aggregation_function == 'average': # regression
+            return np.mean(k_nearest)
+   
         
