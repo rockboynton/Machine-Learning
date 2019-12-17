@@ -23,7 +23,7 @@ class KNN:
         else:
             raise ValueError('aggregation_function must be either "mode" or "average"')
         
-        self.ref_points = None
+        self.ref_points = None 
         self.known_outputs = None
         
 
@@ -41,11 +41,12 @@ class KNN:
         Predicts the output variable's values for the query points X.
         """
         distances = spatial.distance.cdist(X, self.ref_points)
-        k_nearest = np.argsort(distances)[:self.k]
+        k_nearest_indices = np.argsort(distances)[:,:self.k]
+        k_nearest_observations = self.known_outputs[k_nearest_indices]
 
         if self.aggregation_function == 'mode': # classification
-            return stats.mode(k_nearest)
+            return np.reshape(stats.mode(k_nearest_observations, 1).mode, -1)
         elif self.aggregation_function == 'average': # regression
-            return np.mean(k_nearest)
+            return np.mean(k_nearest_observations, 1)
    
         
