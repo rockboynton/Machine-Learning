@@ -15,7 +15,8 @@ class KMeans:
         """
         Choose initial cluster centers
         """
-        pass
+        random = np.random.randn(X.shape[0], X.shape[1])
+        self.cluster_centers = np.ndarray(X[random])
         
     def assign_points(self, X):
         """
