@@ -16,6 +16,7 @@ class KMeans:
         Choose initial cluster centers
         """
         self.cluster_centers = X[np.random.choice(np.arange(len(X)), self.k), :]
+
         
     def assign_points(self, X):
         """
@@ -28,7 +29,11 @@ class KMeans:
         stored as a 1D array of the distances between every point
         and its assigned cluster center.
         """
-        pass
+        distances = spatial.distance.cdist(X, self.cluster_centers, metric='euclidean')
+        cluster_assignments = np.argmin(distances, axis=1)
+        min_distances = np.min(distances, axis=1)
+        return cluster_assignments, min_distances
+
         
     def reinitialize_empty_clusters(self, X, cluster_assignments, min_distances):
         """
@@ -36,7 +41,15 @@ class KMeans:
         away from their clusters' centers to the empty clusters.  Updates
         cluster assignments and minimum distances as appropriate.
         """
-        pass
+        # ? should i sort every loop or only sort at the start and use an index
+        for cluster in range(self.k):
+            if cluster not in np.unique(cluster_assignments):
+                new_assignment = np.argsort(min_distances)[-1]
+                cluster_assignments[new_assignment] = cluster
+                min_distances[new_assignment] = 0
+
+        return cluster_assignments
+
         
     def update_centers(self, X, cluster_assignments):
         """
