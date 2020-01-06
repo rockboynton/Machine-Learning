@@ -55,7 +55,10 @@ class KMeans:
         """
         Re-calculate cluster centers using points assigned to each cluster.
         """
-        pass
+        for cluster in range(self.k):
+            cluster_points = X[cluster_assignments == cluster, :]
+            self.cluster_centers[cluster] = np.mean(cluster_points, axis=0)
+
         
     def score(self, X):
         """
