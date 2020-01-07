@@ -15,7 +15,7 @@ class KMeans:
         """
         Choose initial cluster centers
         """
-        self.cluster_centers = X[np.random.choice(np.arange(len(X)), self.k), :]
+        self.cluster_centers = X[np.random.choice(X.shape, self.k), :]
 
         
     def assign_points(self, X):
@@ -68,10 +68,15 @@ class KMeans:
         then calculate the sum of the squared Euclidean distance between every point and
         its assigned cluster center.
         """
+        cluster_assignments, min_distances = self.assign_points(X)
+        cluster_assignments = self.reinitialize_empty_clusters(cluster_assignments, min_distances)
+
         error = 0
         for cluster in range(self.k):
             cluster_points = X[cluster_assignments == cluster, :]
             error += np.sum(spatial.distance.cdist(cluster_points, self.cluster_centers[cluster]), axis=0)
+            
+        return error
         
         
     def fit(self, X):
