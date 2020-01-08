@@ -41,10 +41,9 @@ class KMeans:
         away from their clusters' centers to the empty clusters.  Updates
         cluster assignments and minimum distances as appropriate.
         """
-        # ? should i sort every loop or only sort at the start and use an index
         for cluster in range(self.k):
             if cluster not in np.unique(cluster_assignments):
-                new_assignment = np.argsort(min_distances)[-1]
+                new_assignment = np.argmax(min_distances)
                 cluster_assignments[new_assignment] = cluster
                 min_distances[new_assignment] = 0
 
