@@ -9,9 +9,13 @@ class Optimizer:
         """
         Max_iter -- maximum number of iterations to run
         step_size -- also known as lambda
-        tol --
+        tol -- tolerance
         delta -- perturbation to use in numerical differentiation
         """
+        self.step_size = step_size
+        self.max_iter = max_iter
+        self.tol = tol
+        self.delta = delta
         
     
     def optimize(self, cost_func, starting_params):
