@@ -28,7 +28,23 @@ class Optimizer:
         Give consideration for what the exit conditions of this loop should be.
         
         Returns a tuple of (optimized_param, iters)
-        """
+        """ 
+        current_params = starting_params
+        iters = 0
+        while iters < self.max_iter:
+            # compute the gradient, ∇𝑓(𝑥⃑), at current model parameters.
+            gradient = self._gradient(cost_func, current_params)
+            
+            # update 𝑥⃑𝑘+1 = 𝑥⃑𝑘 + 𝛾∇𝑓(𝑥⃑)
+            optimized_params = self._update(current_params, gradient)
+
+            # if change in gradient is < tolerance, stop – else go to step 3.
+            if self._calculate_change(current_params, optimized_params) < self.tol:
+                break
+
+            iters += 1
+
+        return optimized_params, iters
         
     
     def _calculate_change(self, old, new):
@@ -36,6 +52,7 @@ class Optimizer:
         Calculates the change between the old and new parameters.
         Returns a scalar.
         """
+        return np.square(new - old).sum()
         
     
     def _gradient(self, cost_func, params):
@@ -46,8 +63,9 @@ class Optimizer:
         First-order numerical differentiation
         df/dx = [ f(x + delta) - f(x) ] / delta
         
-        Should return the gradient at the caluclated point
+        Should return the gradient at the calculated point
         """
+        return (cost_func.cost(params + self.delta) - cost_func.cost(params)) / self.delta
         
             
     def _update(self, param, gradient):
@@ -56,4 +74,6 @@ class Optimizer:
         
         Returns the new parameters.  (Do not modify input)
         """
+        # 𝑥⃑𝑘+1 = 𝑥⃑𝑘 + 𝛾∇𝑓(𝑥⃑)
+        return param + self.step_size * gradient
         
