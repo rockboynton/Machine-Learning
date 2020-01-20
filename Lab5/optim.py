@@ -65,7 +65,13 @@ class Optimizer:
         
         Should return the gradient at the calculated point
         """
-        return (cost_func.cost(params + self.delta) - cost_func.cost(params)) / self.delta
+        gradient = np.zeros(params.size)
+        for i in range(gradient.size):
+            partial = np.copy(params)
+            partial[i] += self.delta
+            gradient[i] = (cost_func.cost(partial) - cost_func.cost(params)) / self.delta
+            
+        return gradient
         
             
     def _update(self, param, gradient):
