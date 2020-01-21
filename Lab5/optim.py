@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.spatial.distance import cdist
 
 
 class Optimizer:
@@ -38,11 +39,13 @@ class Optimizer:
             # update 𝑥⃑𝑘+1 = 𝑥⃑𝑘 - 𝛾∇𝑓(𝑥⃑)
             optimized_params = self._update(current_params, gradient)
 
+            iters += 1
+            
             # if change in gradient is < tolerance, stop – else go to step 3.
             if self._calculate_change(current_params, optimized_params) < self.tol:
                 break
-
-            iters += 1
+            
+            current_params = optimized_params
 
         return optimized_params, iters
         
@@ -52,8 +55,8 @@ class Optimizer:
         Calculates the change between the old and new parameters.
         Returns a scalar.
         """
-        return np.square(new - old).sum()
-        
+        return np.linalg.norm(new - old)
+
     
     def _gradient(self, cost_func, params):
         """
