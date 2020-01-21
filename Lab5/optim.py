@@ -35,7 +35,7 @@ class Optimizer:
             # compute the gradient, ∇𝑓(𝑥⃑), at current model parameters.
             gradient = self._gradient(cost_func, current_params)
             
-            # update 𝑥⃑𝑘+1 = 𝑥⃑𝑘 + 𝛾∇𝑓(𝑥⃑)
+            # update 𝑥⃑𝑘+1 = 𝑥⃑𝑘 - 𝛾∇𝑓(𝑥⃑)
             optimized_params = self._update(current_params, gradient)
 
             # if change in gradient is < tolerance, stop – else go to step 3.
@@ -81,5 +81,5 @@ class Optimizer:
         Returns the new parameters.  (Do not modify input)
         """
         # 𝑥⃑𝑘+1 = 𝑥⃑𝑘 + 𝛾∇𝑓(𝑥⃑)
-        return param + self.step_size * gradient
+        return param - self.step_size * gradient
         
