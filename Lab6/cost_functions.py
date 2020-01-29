@@ -1,4 +1,5 @@
 import numpy as np
+from math import pi, e, sqrt
 
 class GaussianCostFunction:
     """
@@ -9,6 +10,8 @@ class GaussianCostFunction:
         The constructor takes the feature matrix and true y values
         for the training data.
         """
+        self.features = features
+        self.y_true = y_true
         
     
     def _predict(self, features, params):
@@ -20,6 +23,9 @@ class GaussianCostFunction:
         x values.  The params is a length-2 array of the
         mean (mu) and std deviation (sigma).
         """
+        # implements the gaussian function
+        mu, sigma = params
+        return (1 / (sigma*sqrt(2*pi))) * e**(-0.5 * ((features - mu) / sigma)**2)
         
         
     def _mse(self, y_true, pred_y):
@@ -27,7 +33,7 @@ class GaussianCostFunction:
         Calculates the mean-squared error between the predicted and
         true y values.
         """
-        
+        return np.mean((y_true - pred_y) ** 2)
         
     def cost(self, params):
         """
@@ -39,6 +45,10 @@ class GaussianCostFunction:
         2. Calculate the error between the true and predicted y values
         3. Return the error
         """
+        pred_y = self._predict(self.features, params)
+        mse = self._mse(self.y_true, pred_y)
+        return mse
+
         
 class LinearCostFunction:
     """
@@ -48,7 +58,6 @@ class LinearCostFunction:
         """
         The constructor takes the feature matrix and true y values
         for the training data.
-        
         """
         
     
