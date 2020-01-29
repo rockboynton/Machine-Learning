@@ -59,6 +59,8 @@ class LinearCostFunction:
         The constructor takes the feature matrix and true y values
         for the training data.
         """
+        self.features = features
+        self.y_true = y_true
         
     
     def _predict(self, features, params):
@@ -69,12 +71,16 @@ class LinearCostFunction:
         We expect that the features are a NxM matrix.
         The params are a 1D array of length M.
         """
+        # implement linear regression
+        return np.sum(features * params, axis=1)
+
         
     def _mse(self, y_true, pred_y):
         """
         Calculates the mean-squared error between the predicted and
         true y values.
         """
+        return np.mean((y_true - pred_y) ** 2)
         
         
     def cost(self, params):
@@ -87,3 +93,6 @@ class LinearCostFunction:
         2. Calculate the error between the true and predicted y values
         3. Return the error
         """
+        pred_y = self._predict(self.features, params)
+        mse = self._mse(self.y_true, pred_y)
+        return mse
