@@ -43,8 +43,17 @@
 # %%
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import normalize
 
-data = np.loadtxt('Advertising.csv', delimiter=',', skiprows=1, usecols=[1, 2, 3])
+# load data
+features = np.loadtxt('Advertising.csv', delimiter=',', skiprows=1, usecols=[1, 2, 3])
+response = np.loadtxt('Advertising.csv', delimiter=',', skiprows=1, usecols=[4])
 
-
+# normalize features
+minimum, maximum = features.min(axis=0), features.max(axis=0)
+for i in range(features.shape[1]):
+    features[:, i] = (features[:, i] - minimum[i]) / (maximum[i] - minimum[i])
+    
+# Add baseline feature
+features = np.hstack((np.ones(features.shape[0]).reshape(-1, 1), features))
 # %%
