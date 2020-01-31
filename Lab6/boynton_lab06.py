@@ -50,10 +50,8 @@ features = np.loadtxt('Advertising.csv', delimiter=',', skiprows=1, usecols=[1, 
 response = np.loadtxt('Advertising.csv', delimiter=',', skiprows=1, usecols=[4])
 
 # normalize features
-minimum, maximum = features.min(axis=0), features.max(axis=0)
-for i in range(features.shape[1]):
-    features[:, i] = (features[:, i] - minimum[i]) / (maximum[i] - minimum[i])
+features = features / features.max(axis=0)
     
-# Add baseline feature
+# Add baseline feature in column 0
 features = np.hstack((np.ones(features.shape[0]).reshape(-1, 1), features))
 # %%
